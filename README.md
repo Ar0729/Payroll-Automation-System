@@ -1,553 +1,1287 @@
 # Payroll Automation System
 
-A comprehensive Python-based payroll automation system designed to process employee leave data, detect various leave patterns, and generate detailed payroll reports with advanced analysis.
+A Python-based payroll automation system designed to process employee leave, resignation, and allowance data, detect important leave patterns, apply validation rules, and generate structured Excel payroll reports.
+
+This project demonstrates how **Python, Pandas, and OpenPyXL** can be used to automate repetitive Excel-based payroll data processing tasks.
+
+> **Current Version:** v1.0.0  
+> **Release Date:** 15 October 2026  
+> **Project Type:** Portfolio / Demo Project
+
+---
 
 ## 📋 Table of Contents
 
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Input Files](#input-files)
-- [Output Files](#output-files)
-- [Processors](#processors)
-- [Data Processing Logic](#data-processing-logic)
+- [Overview](#-overview)
+- [Project Objectives](#-project-objectives)
+- [Features](#-features)
+- [Technologies Used](#-technologies-used)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Input Data](#-input-data)
+- [Usage](#-usage)
+- [Processing Workflow](#-processing-workflow)
+- [Processors](#-processors)
+- [Data Processing Logic](#-data-processing-logic)
+- [Output Report](#-output-report)
+- [Sample Data](#-sample-data)
+- [Example Output](#-example-output)
+- [Troubleshooting](#-troubleshooting)
+- [Limitations](#-limitations)
+- [Future Enhancements](#-future-enhancements)
+- [Version History](#-version-history)
+- [License](#-license)
+- [Author](#-author)
+
+---
+
+## 📌 Overview
+
+The **Payroll Automation System** automates common payroll-related data processing and validation tasks.
+
+The system reads employee leave, resignation, and allowance data from Excel files, applies predefined business rules, identifies relevant patterns, and generates a formatted Excel report.
+
+Instead of manually reviewing large Excel datasets, the system separates the processing into independent modules called **processors**. Each processor performs a specific payroll-related analysis.
+
+### Main processing areas
+
+- Loss of Pay (LOP) analysis
+- Previous-month LOP tracking
+- Repeated sick leave detection
+- Maternity leave processing
+- Friday-Monday leave pattern detection
+- Sandwich leave detection
+- Resignation tracking
+- Allowance validation
+- Employee name handling
+- Excel report generation
+
+---
+
+## 🎯 Project Objectives
+
+The main objectives of this project are:
+
+- Automate repetitive payroll-data processing tasks
+- Reduce manual Excel-based analysis
+- Detect predefined leave patterns automatically
+- Validate leave-related business rules
+- Process resignation information
+- Validate employee allowance data
+- Generate structured Excel reports
+- Create a modular and maintainable Python project
+- Demonstrate practical Data Science/Data Analytics automation skills
 
 ---
 
 ## ✨ Features
 
-### Leave Processing
-- **Loss of Pay (LOP) Analysis** - Detects LOP for current and previous months
-- **Maternity Leave Tracking** - Identifies and processes maternity leave records
-- **Repeated Sick Leave Detection** - Flags employees with >5 consecutive sick days
-- **Sandwich Leave Detection** - Identifies Friday-Monday leave patterns with CL validation
-- **Friday-Monday Patterns** - Tracks recurring weekend leave patterns
+### 🏖️ Leave Processing
 
-### Resignation Management
-- **Multi-Month Resignation Tracking** - Groups resignees by previous, current, and next month
-- **Process Status Monitoring** - Tracks Processing vs Hold status
-- **Asset & Clearance Tracking** - Records HR/Finance/Asset clearance status
-- **Formatted Reporting** - Month-grouped output with visual highlighting
+#### Loss of Pay (LOP) Analysis
 
-### Data Enrichment
-- **Employee Name Mapping** - Automatically links employee IDs to names
-- **AI-Powered Insights** - Optional AIGuard integration for enhanced remarks
-  - Context-aware analysis of each record
-  - Automated summary generation
-  - Fraud/anomaly detection suggestions
-  - Graceful degradation if AI unavailable
-- **Date Formatting** - Automatic conversion to standard DD-MM-YYYY format
-- **Validation Rules** - CL (Casual Leave) applied only on Tuesday-Thursday
+- Detects current-month LOP records
+- Detects previous-month LOP records
+- Handles leave periods crossing month boundaries
+- Generates remarks for detected LOP records
 
-### Output Generation
-- **Excel Reports** - Professional formatted Excel output with multiple sheets
-- **Month-Based Organization** - Data grouped logically by month and leave type
-- **Color Highlighting** - Visual distinction for month headers and important records
-- **Rich Text Remarks** - Enhanced remarks with AI insights and leave application dates
-- **Comprehensive Coverage** - 8 different leave analysis processors with integrated output
+#### Maternity Leave Tracking
+
+- Identifies maternity leave records
+- Calculates leave duration
+- Generates maternity leave information
+
+#### Repeated Sick Leave Detection
+
+- Detects sick leave exceeding 5 consecutive days
+- Calculates total leave duration
+- Flags records that require review
+
+#### Sandwich Leave Detection
+
+- Detects Friday-Monday leave combinations
+- Supports predefined leave combinations
+- Validates Casual Leave (CL) weekday rules
+- Identifies weekend days between leave records
+- Supports cross-month leave periods
+
+#### Friday-Monday Pattern Detection
+
+- Detects employees taking leave on Friday and Monday
+- Identifies recurring patterns
+- Generates pattern-based remarks
+
+---
+
+### 👤 Resignation Management
+
+The resignation processor handles:
+
+- Employee ID
+- Employee Name
+- Date of Resignation
+- Last Working Day
+- Notice Period
+- Relieving Date
+- Process/Hold status
+- Reason for resignation
+- Asset clearance
+- HR clearance
+- Finance clearance
+- Remarks
+
+---
+
+### 💰 Allowance Processing
+
+The allowance processor:
+
+- Processes employee allowance records
+- Validates allowance amounts
+- Detects invalid amounts
+- Flags negative allowance values
+- Generates allowance details
+
+---
+
+### 🧹 Data Processing
+
+The system provides:
+
+- Date conversion
+- Date validation
+- Employee ID handling
+- Employee name mapping
+- Missing-data handling
+- Column validation
+- Month-based processing
+- Cross-month date handling
+
+---
+
+### 📊 Excel Report Generation
+
+The generated Excel report includes:
+
+- Multiple worksheets
+- Formatted headers
+- Automatic column-width adjustment
+- Freeze panes
+- Auto filters
+- Structured remarks
+- Separate output for each processor
+- Empty-result handling
+
+---
+
+## 🛠️ Technologies Used
+
+| Technology | Purpose |
+|------------|---------|
+| Python | Core programming language |
+| Pandas | Data processing and analysis |
+| OpenPyXL | Excel reading, writing and formatting |
+| NumPy | Numerical operations |
+| Excel | Input and output data |
+| Git | Version control |
+| GitHub | Source-code management |
 
 ---
 
 ## 📁 Project Structure
 
-```
-payroll_automation/
-├── main.py                          # Main entry point
-├── requirements.txt                 # Python dependencies
-├── README.md                        # This file
+```text
+Payroll-Automation-System/
+│
 ├── config/
-│   └── settings.py                  # Configuration settings
+│   └── setting.py
+│
 ├── input/
-│   ├── Absence Details Report_*.xlsx     # Employee leave data
-│   └── Resignation_Input_*.xlsx          # Resignation data
+│   └── payroll_sample_data.xlsx
+│
 ├── output/
-│   └── payroll_output.xlsx          # Generated report
-├── template/
-│   └── Template.xlsx                # Excel template
+│   └── payroll_output.xlsx
+│
 ├── processors/
-│   ├── lop_current.py               # Current month LOP processor
-│   ├── lop_previous.py              # Previous month LOP processor
-│   ├── maternity_leave.py           # Maternity leave processor
-│   ├── repeated_sick.py             # Repeated sick leave processor
-│   ├── sandwich_leave.py            # Sandwich leave processor
-│   ├── fri_mon_processor.py         # Friday-Monday pattern processor
-│   ├── resignees.py                 # Resignation processor
-│   └── sick_leave.py                # Sick leave utilities
-└── utils/
-    ├── file_loader.py               # Excel file loader
-    ├── excel_writer.py              # Excel report writer
-    ├── date_utils.py                # Date utilities
-    ├── employee_name_mapper.py       # Employee name mapping
-    ├── dataframe_tools.py            # DataFrame utilities
-    ├── aiguard_client.py             # AIGuard API client
-    └── aiguard_output_enhancer.py    # AI-powered enhancements
+│   ├── allowance.py
+│   ├── fri_mon_processor.py
+│   ├── lop_current.py
+│   ├── lop_previous.py
+│   ├── maternity_leave.py
+│   ├── repeated_sick.py
+│   ├── resignees.py
+│   └── sandwich_leave.py
+│
+├── utils/
+│   ├── dataframe_tools.py
+│   ├── date_utils.py
+│   ├── employee_name_mapper.py
+│   ├── excel_writer.py
+│   └── file_loader.py
+│
+├── main.py
+├── requirements.txt
+├── README.md
+└── .gitignore
 ```
+
+---
+
+## 📂 Folder Description
+
+### `config/`
+
+Contains project configuration such as:
+
+- Input paths
+- Output paths
+- Date format
+- Leave thresholds
+- Validation rules
+
+### `input/`
+
+Contains sample input data used for testing and demonstration.
+
+### `output/`
+
+Contains generated Excel reports.
+
+Generated output files are excluded from Git tracking using `.gitignore`.
+
+### `processors/`
+
+Contains independent modules responsible for different payroll-processing tasks.
+
+### `utils/`
+
+Contains reusable helper functions for:
+
+- Excel loading
+- Date processing
+- DataFrame operations
+- Employee name mapping
+- Excel report generation
+
+### `main.py`
+
+Acts as the main entry point and coordinates all processors.
 
 ---
 
 ## 🚀 Installation
 
 ### Prerequisites
+
+Make sure you have:
+
 - Python 3.8 or higher
-- pip package manager
+- pip
+- Git
+- Excel or another `.xlsx` compatible application
 
-### Setup Steps
+---
 
-1. **Clone or download the project**
-   ```bash
-   cd payroll_automation
-   ```
+### 1. Clone the Repository
 
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+git clone https://github.com/Ar0729/Payroll-Automation-System.git
+```
 
-3. **Configure file paths** (if different from defaults)
-   Edit `main.py` and update the file paths:
-   ```python
-   INPUT_FILE = r"path/to/Absence Details Report.xlsx"
-   RESIGNATION_INPUT_FILE = r"path/to/Resignation_Input.xlsx"
-   TEMPLATE_FILE = r"path/to/Template.xlsx"
-   OUTPUT_FILE = r"path/to/payroll_output.xlsx"
-   ```
+---
+
+### 2. Navigate to the Project
+
+```bash
+cd Payroll-Automation-System
+```
+
+---
+
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+---
+
+### 4. Activate the Virtual Environment
+
+#### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+#### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+---
+
+### 5. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
 ## ⚙️ Configuration
 
-### Environment Variables
-Set AIGuard credentials (optional, for AI enhancements):
-```bash
-set AIGUARD_CLIENT_ID=your_client_id
-set AIGUARD_CLIENT_SECRET=your_client_secret
+Project configuration is maintained in:
+
+```text
+config/setting.py
 ```
 
-### Month Detection
-The system automatically detects the current month from:
-1. System date (if data available)
-2. Latest available month in input data (fallback)
+The configuration includes:
 
-Months are calculated as:
-- **Current Month**: Latest month in data
-- **Previous Month**: Month before current
-- **Next Month**: Month after current
+```python
+DATE_FORMAT = "%d-%m-%Y"
+
+SICK_LEAVE_THRESHOLD = 5
+
+VALID_CL_WEEKDAYS = {1, 2, 3}
+```
+
+### CL Weekday Mapping
+
+```text
+1 = Tuesday
+2 = Wednesday
+3 = Thursday
+```
+
+Therefore, Casual Leave is considered valid on:
+
+- Tuesday
+- Wednesday
+- Thursday
 
 ---
 
-## 🤖 AIGuard Integration (Optional)
+## 📥 Input Data
 
-### What is AIGuard?
-AIGuard is an optional AI-powered module that enhances payroll output with intelligent insights and remarks. It analyzes each record contextually and generates actionable summaries.
+The system uses Excel-based input data.
 
-### Setup
+### 1. Absence Data
 
-1. **Ensure environment variables are set**:
-   ```python
-   os.environ["AIGUARD_CLIENT_ID"] = "your_client_id"
-   os.environ["AIGUARD_CLIENT_SECRET"] = "your_client_secret"
-   ```
+The absence data contains employee leave information.
 
-2. **AIGuard is automatically loaded** if credentials are available
-   - If not available, system continues without AI enhancements
-   - Graceful fallback ensures data processing is never blocked
+Required columns:
 
-### Features
-
-- **AI-Enhanced Remarks**: Each leave record gets an AI-generated summary
-- **Context-Aware Analysis**: Different analysis for each leave type
-- **Lazy Loading**: Credentials loaded only when AI features are actually used
-- **Error Resilience**: Errors in AI calls don't stop payroll processing
-- **Configurable Model**: Uses GPT-4o-mini by default (configurable)
-
-### Supported Leave Types for AI Enhancement
-
-- **Current LOP**: Analyzes loss of pay patterns and flags anomalies
-- **Previous LOP**: Tracks carryforward status and transitions
-- **Friday-Monday Patterns**: Detects potential time-off abuse patterns
-- **Repeated Sick Leave**: Flags suspicious patterns and suggests medical review
-- **Maternity Leave**: Validates dates and flags compliance issues
-- **Sandwich Leave**: Analyzes leave combination patterns and CL usage
-
-### Example AI-Enhanced Remark
+```text
+Employee ID
+Employee Name
+Leave Type
+From Date
+To Date
+Leave Applied Date
+Status
+No. of Days
+Unit Structure
+Comments
 ```
-Original Remark: Sick Leave: 25-05-2026 to 28-05-2026
-AI Enhancement: [AI]: Potential legitimate sick leave - 4 consecutive days midweek. 
-                Consider checking medical documentation.
+
+### Example
+
+| Employee ID | Employee Name | Leave Type | From Date | To Date | No. of Days |
+|-------------|---------------|------------|-----------|---------|-------------|
+| EMP001 | Rahul Sharma | SL | 05-10-2026 | 11-10-2026 | 7 |
+| EMP002 | Priya Patil | ML | 01-10-2026 | 15-11-2026 | 46 |
+| EMP003 | Amit Verma | CL | 07-10-2026 | 07-10-2026 | 1 |
+| EMP004 | Sneha Joshi | LOP | 12-10-2026 | 14-10-2026 | 3 |
+
+---
+
+### 2. Resignation Data
+
+Required columns:
+
+```text
+Emp ID
+Employee Name
+Date of Resignation
+Last Working Day
+Notice Period Days
+Relieving Date
+Process/Hold
+Reason for Resignation
+Asset Clearance Completed
+HR Clearance Completed
+Finance Clearance Completed
+Remark
 ```
 
 ---
 
-## 📖 Usage
+### 3. Allowance Data
 
-### Basic Execution
+Required columns:
+
+```text
+Employee ID
+Employee Name
+Allowance Type
+Amount
+```
+
+The allowance processor validates the amount and assigns an appropriate status.
+
+---
+
+## 🚀 Usage
+
+After installing the dependencies and placing the required input data inside the `input/` folder, run:
 
 ```bash
 python main.py
 ```
 
-### Workflow
+The program will:
 
-1. **Load Data** - Reads employee leave and resignation data from Excel files
-2. **Detect Months** - Identifies current, previous, and next month
-3. **Filter Data** - Separates data by month
-4. **Run Processors** - Executes all leave analysis processors
-5. **Enrich Names** - Maps employee IDs to employee names
-6. **Enhance Data** - Optional AI-powered remarks (AIGuard)
-7. **Generate Report** - Writes professional Excel report
-8. **Save Output** - Saves to specified output location
-
-### Example Output
+```text
+1. Load absence data
+2. Detect the processing month
+3. Process current-month LOP
+4. Process previous-month LOP
+5. Detect repeated sick leave
+6. Process maternity leave
+7. Detect Friday-Monday patterns
+8. Detect sandwich leave
+9. Process resignation data
+10. Process allowance data
+11. Generate the Excel report
 ```
-✅ Loading BPHR data...
-✅ Detecting months...
-✅ Running CURRENT LOP processor...
-✅ Running PREVIOUS LOP processor...
-✅ Running REPEATED SICK LEAVE...
-✅ Running MATERNITY LEAVE...
-✅ Running Sandwich Leave...
-✅ Running RESIGNEES processor...
-✅ Adding employee names...
-✅ Excel saved: output/payroll_output.xlsx
-[DONE] Payroll report generated successfully!
+
+The final report is generated in:
+
+```text
+output/payroll_output.xlsx
 ```
 
 ---
 
-## 📥 Input Files
+## 🔄 Processing Workflow
 
-### 1. Absence Details Report (Required)
-**Format**: Excel (.xlsx)  
-**Required Columns**:
+```text
+                 ┌─────────────────────┐
+                 │    Input Excel Data │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │    Load & Validate  │
+                 │        Data         │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Detect Processing    │
+                 │       Month         │
+                 └──────────┬──────────┘
+                            │
+            ┌───────────────┼────────────────┐
+            │               │                │
+            ▼               ▼                ▼
+       LOP Analysis    Leave Pattern    Resignation
+                         Analysis       Processing
+            │               │                │
+            └───────────────┼────────────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Allowance Validation│
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Generate Excel      │
+                 │      Report         │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 payroll_output.xlsx
+```
+
+---
+
+# 🔧 Processors
+
+## 1. Current LOP Processor
+
+File:
+
+```text
+processors/lop_current.py
+```
+
+### Purpose
+
+Detects Loss of Pay records that overlap with the current processing month.
+
+### Processing
+
+The processor:
+
+- Converts dates to datetime
+- Determines current month boundaries
+- Identifies LOP records
+- Handles missing `To Date`
+- Generates remarks
+
+---
+
+## 2. Previous LOP Processor
+
+File:
+
+```text
+processors/lop_previous.py
+```
+
+### Purpose
+
+Identifies LOP records from the previous month that may be relevant to the current payroll cycle.
+
+### Processing
+
+- Determines previous month
+- Checks leave-period overlap
+- Identifies LOP records
+- Generates carry-forward remarks
+
+---
+
+## 3. Repeated Sick Leave Processor
+
+File:
+
+```text
+processors/repeated_sick.py
+```
+
+### Purpose
+
+Detects sick leave exceeding the configured threshold.
+
+Default threshold:
+
+```text
+More than 5 consecutive days
+```
+
+Example:
+
+```text
+05-10-2026 → 11-10-2026
+
+Total = 7 days
+```
+
+Result:
+
+```text
+Repeated sick leave detected
+```
+
+---
+
+## 4. Maternity Leave Processor
+
+File:
+
+```text
+processors/maternity_leave.py
+```
+
+### Purpose
+
+Identifies maternity leave records and calculates the duration.
+
+Supported leave types include:
+
+```text
+ML
+MATERNITY
+MATERNITY LEAVE
+```
+
+---
+
+## 5. Friday-Monday Processor
+
+File:
+
+```text
+processors/fri_mon_processor.py
+```
+
+### Purpose
+
+Detects leave patterns where an employee has leave on Friday and Monday.
+
+Pattern:
+
+```text
+Friday
+  ↓
+Saturday
+  ↓
+Sunday
+  ↓
+Monday
+```
+
+The processor identifies the Friday and Monday records and generates a remark.
+
+---
+
+## 6. Sandwich Leave Processor
+
+File:
+
+```text
+processors/sandwich_leave.py
+```
+
+### Purpose
+
+Detects predefined Friday-Monday sandwich leave patterns.
+
+Supported combinations:
+
+```text
+SL + CL
+CL + SL
+EL + CL
+CL + EL
+```
+
+### Validation
+
+The system validates whether CL is applied on a valid weekday.
+
+Valid:
+
+```text
+Tuesday
+Wednesday
+Thursday
+```
+
+Invalid:
+
+```text
+Monday
+Friday
+Saturday
+Sunday
+```
+
+If the CL date is invalid, the generated remark includes a warning.
+
+---
+
+## 7. Resignation Processor
+
+File:
+
+```text
+processors/resignees.py
+```
+
+### Purpose
+
+Processes employee resignation information.
+
+It extracts:
+
 - Employee ID
 - Employee Name
-- Leave Type (SL, CL, EL, PL, etc.)
-- From Date
-- To Date
-- Leave Applied Date
-- Status (Approved, Pending, etc.)
-- No. of Days
-- Unit Structure
-- Comments
-
-**File Location**: `input/Absence Details Report_DD.MM.YYYY.xlsx`
-
-### 2. Resignation Input (Optional but recommended)
-**Format**: Excel (.xlsx)  
-**Required Columns**:
-- Emp ID
-- Employee Name
-- Date of Resignation
-- Last Working Day (LWD)
-- Notice Period Days
+- Resignation Date
+- Last Working Day
+- Notice Period
 - Relieving Date
-- Process/Hold (Process or Hold)
-- Reason for Resignation
-- Asset Clearance Completed
-- HR Clearance Completed
-- Finance Clearance Completed
-- Remark
-
-**File Location**: `input/Resignation_Input_*.xlsx`
-
-### 3. Excel Template (Required)
-**Format**: Excel (.xlsx)  
-**Content**: Pre-formatted template with sheets:
-- Current_month
-- Previous_month
-- Repeated Sick Leave
-- Mon-Fri
-- Maternity Leave
-- Sandwich Leave
-- Resignees
-
-**File Location**: `template/Template.xlsx`
+- Process/Hold status
+- Reason
+- Asset Clearance
+- HR Clearance
+- Finance Clearance
+- Remarks
 
 ---
 
-## 📤 Output Files
+## 8. Allowance Processor
 
-### Payroll Output Report
-**Location**: `output/payroll_output.xlsx`
+File:
 
-**Contains Sheets**:
-
-| Sheet Name | Purpose | Data |
-|-----------|---------|------|
-| **Current_month** | Current month LOP | Employees with zero productivity days |
-| **Previous_month** | Previous month LOP | LOP from previous month carried forward |
-| **Repeated Sick Leave** | Sick leave >5 days | Employee ID, Days, Remarks |
-| **Mon-Fri** | Friday-Monday patterns | Recurring weekend leave instances |
-| **Maternity Leave** | Maternity leaves | Maternity leave records |
-| **Sandwich Leave** | Sandwich patterns | Friday-Monday leave combinations |
-| **Resignees** | Resignation tracking | Grouped by month with process status |
-
-**Column Format**:
-- S. No
-- Employee ID
-- Employee Name (when available)
-- Relevant metrics (days, count, dates, etc.)
-- Remarks (with leave applied date)
-
----
-
-## 🔧 Processors
-
-### 1. LOP Current (`lop_current.py`)
-Detects Loss of Pay in the current month
-- Identifies employees with zero attendance
-- Flags half-day absences
-- Generates remarks for each LOP case
-
-### 2. LOP Previous (`lop_previous.py`)
-Processes previous month LOP carried forward
-- Identifies ongoing LOP from previous month
-- Tracks continuation into current month
-- Updates status in current payroll
-
-### 3. Maternity Leave (`maternity_leave.py`)
-Processes maternity leave records
-- Identifies maternity leave applicants
-- Validates dates
-- Generates maternity leave report
-
-### 4. Repeated Sick Leave (`repeated_sick.py`)
-Detects excessive sick leave
-- Flags >5 consecutive sick days
-- Calculates total days
-- Marks for HR review
-
-### 5. Sandwich Leave (`sandwich_leave.py`)
-Detects Friday-Monday leave patterns
-- Identifies valid combinations: SL-CL, CL-SL, EL-CL, CL-EL
-- Validates CL applied only on Tue/Wed/Thu
-- Counts weekend days as leave
-- Spans across month boundaries
-
-**Validation Rules**:
-- Friday + Monday leave = Sandwich pattern
-- CL (Casual Leave) only valid on Tuesday, Wednesday, Thursday
-- Invalid CL days flagged with warning
-
-### 6. Friday-Monday Processor (`fri_mon_processor.py`)
-Tracks simple Friday-Monday patterns
-- Detects employees taking Friday off and Monday off
-- Counts occurrences
-- Generates detailed remarks
-
-### 7. Resignees (`resignees.py`)
-Processes resignation data
-- Groups by month (previous, current, next)
-- Month headers highlighted in grey
-- Tracks process/hold status
-- Formats dates as DD-MM-YYYY
-
-### 8. Allowance (`allowance.py`)
-Processes allowance records
-- Identifies and processes employee allowances
-- Generates allowance details report
-- Tracks allowance status and amount
-- Integrated in payroll output
-
----
-
-## 📊 Data Processing Logic
-
-### Leave Type Normalization
+```text
+processors/allowance.py
 ```
+
+### Purpose
+
+Processes and validates employee allowance records.
+
+The processor checks:
+
+- Missing amount
+- Invalid amount
+- Negative amount
+- Valid allowance amount
+
+Example:
+
+```text
+Amount = 5000
+Status = Valid
+```
+
+Invalid example:
+
+```text
+Amount = ABC
+Status = Invalid
+```
+
+Negative example:
+
+```text
+Amount = -1000
+Status = Invalid
+```
+
+---
+
+# 📊 Data Processing Logic
+
+## Leave Type Normalization
+
+The system recognizes common leave abbreviations:
+
+```text
 CL → Casual Leave
 SL → Sick Leave
 EL → Emergency Leave
 PL → Personal Leave
-```
-
-### Date Handling
-- All dates converted to `DD-MM-YYYY` format
-- Time component removed (00:00 format excluded)
-- Month boundaries respected
-- Cross-month leaves properly handled
-
-### Month Filtering
-- Leaves included if they fall in target month
-- Spans across month boundaries supported
-- Both "From Date" and "To Date" checked
-- Partial overlaps properly counted
-
-### CL Validation
-```
-Valid days for CL: Tuesday, Wednesday, Thursday
-Invalid days: Monday, Friday, Saturday, Sunday
-```
-
-### Sandwich Leave Detection
-```
-Pattern: Leave on Friday + Leave on Monday
-Validated Combinations:
-  - SL (Friday) + CL (Monday)
-  - CL (Friday) + SL (Monday)
-  - EL (Friday) + CL (Monday)
-  - CL (Friday) + EL (Monday)
+LOP → Loss of Pay
+ML → Maternity Leave
 ```
 
 ---
 
-## 🎯 Key Features by Processor
+## Date Handling
 
-| Processor | Detects | Validation | Output |
-|-----------|---------|-----------|--------|
-| **LOP Current** | Zero productivity | Attendance records | LOP days |
-| **LOP Previous** | Carried forward LOP | Month transition | LOP status |
-| **Maternity** | Maternity leaves | Date ranges | Leave duration |
-| **Repeated Sick** | >5 consecutive days | Leave duration | Total days |
-| **Sandwich** | Fri-Mon patterns | Leave combinations, CL rules | Weekend count |
-| **Fri-Mon** | Recurring patterns | Date proximity | Occurrence count |
-| **Resignees** | Resignation records | Relieving dates | Process status |
-| **Allowance** | Allowance records | Amount validation | Allowance details |
+The system:
+
+- Converts input dates to Pandas datetime
+- Handles invalid dates
+- Uses `DD-MM-YYYY` formatting
+- Handles missing `To Date`
+- Supports month boundaries
+- Processes cross-month leave periods
 
 ---
 
-## 🔄 Month Calculation
+## Month Filtering
 
-The system uses this logic to determine months:
+The system checks whether a leave period overlaps with the processing month.
 
-```python
-# Get current system month
-current_month, current_year = get_current_month()
+For example:
 
-# If no data for current month, use latest available
-if no_data_for_month:
-    use_latest_month()
-
-# Calculate previous and next months
-previous = current_month - 1
-next = current_month + 1
+```text
+Leave Period:
+28-09-2026 → 03-10-2026
 ```
 
-**Example** (April 2026):
-- Previous: March 2026
-- Current: April 2026
-- Next: May 2026
+This record can be relevant to both:
+
+```text
+September 2026
+October 2026
+```
+
+because the leave period crosses the month boundary.
 
 ---
 
-## 📝 Remarks and Comments
+## CL Validation
 
-Each record includes:
-- **Automatically generated remarks** from processor logic
-- **Leave applied date** in bold at end of remarks
-- **Validation warnings** for rule violations
-- **Context-specific information** (e.g., weekend dates for sandwich leave)
+```text
+Valid CL Days:
+Tuesday
+Wednesday
+Thursday
 
-Example:
-```
-Sandwich Leave Detected: SL on 29-03-2026 (Friday) + CL on 01-04-2026 (Monday).
-Weekend days (30-03-2026, 31-03-2026) must be counted as leave.
-Leave Applied: 15-03-2026
+Invalid CL Days:
+Monday
+Friday
+Saturday
+Sunday
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## Sandwich Leave Detection
 
-### Common Issues
+General pattern:
 
-**"Input data has no valid dates"**
-- Ensure "From Date" or "Date" column exists and has valid dates
-- Check date format in Excel
+```text
+Friday Leave
+      +
+Monday Leave
+      =
+Potential Sandwich Pattern
+```
 
-**"Employee names feature DISABLED"**
-- Verify "Employee Name" column exists in input
-- Check column spelling (case-insensitive)
+Supported combinations:
 
-**"No data for current system month"**
-- System uses latest available month in data
-- Check input file has recent dates
+```text
+SL (Friday) + CL (Monday)
 
-**"CL applied on invalid day(s)"**
-- CL (Casual Leave) only valid on Tuesday-Thursday
-- Check leave dates and update if needed
+CL (Friday) + SL (Monday)
 
----
+EL (Friday) + CL (Monday)
 
-## 📞 Support
+CL (Friday) + EL (Monday)
+```
 
-For issues or questions:
-1. Check the output/logs for detailed error messages
-2. Verify input file formats and required columns
-3. Ensure all required files exist in correct locations
-4. Check Python version (3.8+)
+The system generates a warning when CL is applied on a weekday that violates the configured CL rule.
 
 ---
 
-## 📄 License
+# 📤 Output Report
 
-This project is proprietary. All rights reserved.
+The generated report is:
 
----
+```text
+output/payroll_output.xlsx
+```
 
-## � Recent Updates
+### Output Sheets
 
-### Latest Enhancements (May 2026)
-
-#### ✅ AI-Powered Output Enrichment
-- **AIGuard Integration**: Added optional AI-powered insights to enhance payroll remarks
-- **Smart Remark Generation**: AI analyzes each record and generates contextual summaries
-- **Lazy Loading**: AIGuard module loads only when needed to avoid credential prompts
-- **Error Handling**: Graceful fallback if AI enhancement fails - data processing continues
-- **Enhanced Remarks**: Each record gets AI-generated insights combined with existing remarks
-
-#### ✅ Enhanced Data Enrichment
-- **Employee Name Mapping**: Automatically maps employee IDs to names across all output sheets
-- **Comprehensive Integration**: Names enriched for all leave types and resignation records
-- **Data Validation**: Ensures name mapping accuracy before output generation
-- **Flexible Output**: Supports both ID-only and ID+Name formats
-
-#### ✅ Allowance Processing
-- **New Allowance Processor**: Added `allowance.py` module for allowance data processing
-- **Allowance Tracking**: Identifies and processes employee allowances
-- **Integration with Payroll**: Allowance data seamlessly integrated into Excel output
-- **Amount Validation**: Validates allowance amounts and flags anomalies
-
-#### ✅ Improved Excel Output
-- **Multiple Processors**: Output now includes data from 8 processors
-- **Better Organization**: Data grouped by leave type and resignation status
-- **Rich Remarks**: All remarks include AI enhancements and leave applied dates
-- **Professional Formatting**: Color-coded headers and proper column alignment
-
-#### ✅ System Improvements
-- **Robust Configuration**: Hardcoded month/year support with fallback to current system month
-- **Path Flexibility**: Easy configuration of input/output paths
-- **Error Logging**: Detailed console output for monitoring processing status
-- **Batch Processing**: Handles large datasets efficiently with progress indicators
+| Sheet | Purpose |
+|-------|---------|
+| Current_month | Current-month LOP records |
+| Previous_month | Previous-month LOP records |
+| Repeated Sick Leave | Sick leave exceeding 5 days |
+| Mon-Fri | Friday-Monday patterns |
+| Maternity Leave | Maternity leave records |
+| Sandwich Leave | Sandwich leave patterns |
+| Resignees | Employee resignation records |
+| Allowance | Allowance validation |
 
 ---
 
-## 🔄 Version History
+## 📊 Output Format
 
-**v1.1.0** (May 2026)
-- AIGuard integration for AI-powered remarks enhancement
-- Allowance processor module
-- Employee name mapping across all sheets
-- Enhanced error handling and logging
-- Improved data enrichment pipeline
+The generated worksheets contain relevant information such as:
 
-**v1.0.0** (April 2026)
-- Initial release with 7 processors
-- Resignation module with month grouping
-- Grey highlighted month headers
-- Date formatting without time component
+- Employee ID
+- Employee Name
+- Leave dates
+- Number of days
+- Leave type
+- Allowance information
+- Resignation information
+- Processing status
+- Remarks
+
+The Excel writer also provides:
+
+- Formatted headers
+- Column-width adjustment
+- Freeze panes
+- Auto filters
+- Empty-result handling
+
+---
+
+# 🧪 Sample Data
+
+The repository includes synthetic sample data for demonstration and testing.
+
+Example employees include:
+
+```text
+EMP001 - Rahul Sharma
+EMP002 - Priya Patil
+EMP003 - Amit Verma
+EMP004 - Sneha Joshi
+EMP005 - Vikas Gupta
+EMP006 - Neha Kulkarni
+EMP007 - Rohit Mehta
+EMP008 - Anjali Singh
+EMP009 - Karan Deshmukh
+EMP010 - Pooja Nair
+```
+
+The sample data demonstrates:
+
+- Sick leave
+- Maternity leave
+- Casual leave
+- Loss of Pay
+- Emergency leave
+- Personal leave
+- Resignation records
+- Allowance validation
+- Pending leave records
+- Cross-month leave periods
+
+> **Note:** All sample employee and payroll data included in this repository is synthetic and is used only for demonstration and testing.
+
+---
+
+# 🖥️ Example Output
+
+When the program runs successfully, the terminal displays processing information similar to:
+
+```text
+============================================================
+PAYROLL AUTOMATION SYSTEM
+============================================================
+
+Loading absence data...
+
+Processing month: 10-2026
+
+Running processors...
+
+1. Current LOP
+2. Previous LOP
+3. Repeated Sick Leave
+4. Maternity Leave
+5. Friday-Monday
+6. Sandwich Leave
+7. Resignees
+8. Allowance
+
+Generating report...
+
+============================================================
+DONE!
+============================================================
+```
+
+The generated file will be:
+
+```text
+output/payroll_output.xlsx
+```
+
+---
+
+# 🧩 Utility Modules
+
+## `file_loader.py`
+
+Responsible for:
+
+- Reading Excel files
+- Checking whether files exist
+- Checking empty datasets
+- Normalizing columns
+
+---
+
+## `date_utils.py`
+
+Provides:
+
+- Date conversion
+- Date formatting
+- Month-range calculation
+- Month-name generation
+- Weekday validation
+- CL-date validation
+
+---
+
+## `dataframe_tools.py`
+
+Provides reusable DataFrame utilities for:
+
+- Finding columns
+- Validating required columns
+- Removing empty rows
+- Adding serial numbers
+
+---
+
+## `employee_name_mapper.py`
+
+Handles mapping between:
+
+```text
+Employee ID → Employee Name
+```
+
+This allows employee names to be added to processed results.
+
+---
+
+## `excel_writer.py`
+
+Responsible for:
+
+- Creating Excel workbooks
+- Writing processor results to worksheets
+- Formatting headers
+- Adjusting column widths
+- Adding filters
+- Freezing header rows
+
+---
+
+# 🐛 Troubleshooting
+
+## "Input file not found"
+
+Check that the input Excel file exists in:
+
+```text
+input/
+```
+
+Also verify the filename configured in:
+
+```text
+config/setting.py
+```
+
+---
+
+## "No valid dates found"
+
+Check that the input file contains valid values in:
+
+```text
+From Date
+To Date
+```
+
+---
+
+## Missing required columns
+
+Make sure the Excel file contains the required column names.
+
+For example:
+
+```text
+Employee ID
+Employee Name
+Leave Type
+From Date
+To Date
+```
+
+---
+
+## No output file generated
+
+Check:
+
+1. Python is installed correctly.
+2. The virtual environment is activated.
+3. Dependencies are installed.
+4. Input files exist.
+5. Input columns are correct.
+6. No Python error is displayed in the terminal.
+
+---
+
+# ⚠️ Limitations
+
+This project is a **portfolio/demo implementation** designed to demonstrate payroll-data automation concepts.
+
+It is not intended to be used as a production payroll system without additional:
+
+- Security controls
+- Authentication and authorization
+- Data privacy controls
+- Database integration
+- Comprehensive business-rule validation
+- Audit logging
+- Unit and integration testing
+- Production deployment
+- Payroll compliance validation
+
+The sample employee and payroll information included in this repository is synthetic.
+
+---
+
+# 🔮 Future Enhancements
+
+Potential future improvements include:
+
+### 📊 Analytics
+
+- Payroll analytics dashboard
+- Power BI integration
+- Employee leave trend analysis
+- Monthly payroll summaries
+- KPI tracking
+
+### 🌐 Application
+
+- Streamlit web interface
+- Upload Excel files through UI
+- Download generated reports
+- Interactive filtering
+
+### 🗄️ Database
+
+- MySQL/PostgreSQL integration
+- Centralized employee data
+- Historical payroll records
+- Automated data retrieval
+
+### 🤖 AI
+
+- AI-assisted payroll remarks
+- Anomaly detection
+- Pattern analysis
+- Natural-language payroll summaries
+
+### ⚙️ Automation
+
+- Scheduled report generation
+- Automated email delivery
+- Cloud deployment
+- Automated data pipelines
+
+### 🧪 Testing
+
+- Unit tests for every processor
+- Integration testing
+- Automated test pipeline
+- GitHub Actions CI/CD
+
+---
+
+# 🔄 Version History
+
+## v1.0.0 — 15 October 2026
+
+### Initial Public Release
+
+The first public GitHub release of the Payroll Automation System.
+
+### Included Features
+
+- Current-month LOP processing
+- Previous-month LOP processing
+- Repeated sick leave detection
+- Maternity leave processing
+- Friday-Monday pattern detection
+- Sandwich leave detection
+- Resignation processing
+- Allowance processing
 - Employee name mapping
-- AIGuard integration (optional)
+- Date processing and validation
+- Cross-month leave handling
+- Excel report generation
+- Excel formatting
+- Synthetic sample data
+- Modular processor-based architecture
+- Utility modules for reusable processing
+- Git/GitHub project configuration
+- Documentation and setup instructions
 
 ---
 
-## 📅 Last Updated
+# 📅 Project Information
 
-May 23, 2026
+| Information | Details |
+|-------------|---------|
+| Project Name | Payroll Automation System |
+| Version | v1.0.0 |
+| Release Date | 15 October 2026 |
+| Last Updated | 15 October 2026 |
+| Project Type | Portfolio / Demo |
+| Programming Language | Python |
+| Data Processing | Pandas |
+| Excel Automation | OpenPyXL |
+| Version Control | Git |
+| Repository | GitHub |
 
 ---
 
-**Generated for**: Payroll Automation System  
-**Project Location**: `payroll_automation 1 (4)/payroll_automation`
+# 👨‍💻 About the Project
+
+This project was developed as a practical demonstration of **Python-based data processing and Excel automation**.
+
+The project focuses on converting repetitive payroll-data review tasks into a modular automated workflow.
+
+It demonstrates practical skills in:
+
+- Python programming
+- Data manipulation
+- Pandas
+- Excel automation
+- Data validation
+- Business-rule implementation
+- Modular programming
+- File handling
+- Report generation
+- Git and GitHub
+
+The project is designed as a **portfolio/demo implementation** and uses synthetic data rather than real employee or company payroll data.
+
+---
+
+# 🎓 Skills Demonstrated
+
+```text
+Python
+Pandas
+OpenPyXL
+Excel Automation
+Data Cleaning
+Data Validation
+Data Processing
+Business Logic
+Report Automation
+Git
+GitHub
+Modular Programming
+Problem Solving
+```
+
+---
+
+# 📄 License
+
+This project is intended for educational, learning, and portfolio purposes.
+
+The sample data included in this repository is synthetic and does not contain real employee payroll information.
+
+---
+
+# ⭐ Support
+
+If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
+
+---
+
+## 📌 Author
+
+**Aryan Gunjewar**
+
+B.Tech — Data Science
+
+Data Science | Data Analytics | Python | SQL | Power BI
+
+---
+
+**Current Version:** v1.0.0  
+**Release Date:** 15 October 2026  
+**Last Updated:** 15 October 2026
